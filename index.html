@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Adler Eats Order Form</title>
+  <style>
+    body {
+      background-color: #f7ebd9;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      color: #000;
+      background-image: url('https://cdn.jsdelivr.net/gh/your-username/assets@main/adler-eats-logo.jpg');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-attachment: fixed;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 180px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      margin-top: 20px;
+      background-color: black;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="https://github.com/drsnaps/logo/blob/main/WhatsApp%20Image%202025-04-25%20at%2018.22.17_22e60494.jpg" alt="Adler Eats Logo">
+    </div>
+    <h2>Place Your Order</h2>
+    <form action="https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse" method="POST" target="_blank">
+      <label for="name">Full Name</label>
+      <input type="text" name="entry.1234567890" required>
+
+      <label for="contact">Contact Number</label>
+      <input type="tel" name="entry.2345678901" required>
+
+      <label for="meal">Select Your Meal</label>
+      <select name="entry.3456789012" required>
+        <option value="Fries only — K25">Fries only — K25</option>
+        <option value="Fries + Coleslaw — K35">Fries + Coleslaw — K35</option>
+        <option value="Fries + Sausage — K55">Fries + Sausage — K55</option>
+        <option value="Fries + Coleslaw + Sausage — K65">Fries + Coleslaw + Sausage — K65</option>
+      </select>
+
+      <label for="quantity">Quantity</label>
+      <select name="entry.4567890123">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+
+      <label for="notes">Additional Notes</label>
+      <textarea name="entry.5678901234" rows="3" placeholder="Optional..."></textarea>
+
+      <button type="submit">Submit Order</button>
+    </form>
+  </div>
+</body>
+</html>
