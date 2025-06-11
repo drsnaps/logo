@@ -1,100 +1,575 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Adler Eats Order Form</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Adler Eats - Order delicious food and satisfy your cravings!" />
+  <meta property="og:title" content="Adler Eats" />
+  <meta property="og:description" content="Order delicious food and satisfy your cravings!" />
+  <meta property="og:image" content="logo.jpg" />
+  <meta property="og:url" content="https://github.com/aviadlers/eats" />
+  <title>Adler Eats</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --primary-color: #ff9800;
+      --secondary-color: #e65100;
+      --background-color: #fdf3e4;
+      --text-color: #333;
+      --hover-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    }
+
     body {
-      background-color: #f7ebd9;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      color: #000;
-      background-image: url('https://cdn.jsdelivr.net/gh/your-username/assets@main/adler-eats-logo.jpg');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: contain;
-      background-attachment: fixed;
-    }
-    .container {
-      max-width: 500px;
-      margin: auto;
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    .logo {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background-color: var(--background-color);
+      color: var(--text-color);
       text-align: center;
-      margin-bottom: 20px;
+      overflow-x: hidden;
     }
-    .logo img {
-      max-width: 180px;
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
     }
-    label {
-      font-weight: bold;
+
+    .page {
+      display: none;
+    }
+
+    .active {
       display: block;
-      margin-top: 15px;
     }
-    input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1em;
+
+    .menu-item {
+      background: white;
+      padding: 1rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      font-size: 1.1rem;
     }
+
+    .menu-item:hover {
+      transform: scale(1.05);
+      box-shadow: var(--hover-shadow);
+    }
+
+    .menu-item.selected {
+      border: 2px solid var(--primary-color);
+      background-color: #fff3e0;
+    }
+
     button {
-      margin-top: 20px;
       background-color: black;
       color: white;
-      padding: 12px;
-      width: 100%;
-      font-size: 1em;
+      padding: 1rem 2rem;
+      font-size: 1rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
     }
+
     button:hover {
-      background-color: #333;
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: 1px solid #ccc;
+      border-radius: 16px;
+      font-size: 1rem;
+      transition: box-shadow 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+    }
+
+    .price-display {
+      font-weight: bold;
+      margin-top: 0.5rem;
+      color: var(--secondary-color);
+      font-size: 1.1rem;
+    }
+
+    .animate-bounce {
+      animation: bounce 3.0s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    /* Star Rating System */
+    .star-rating {
+      unicode-bidi: bidi-override;
+      font-size: 24px;
+      line-height: 1;
+      display: inline-flex;
+    }
+    
+    .star-rating > span {
+      display: block;
+      position: relative;
+      width: 1.1em;
+      cursor: pointer;
+      color: #ccc;
+      transition: all 0.2s ease;
+    }
+    
+    .star-rating > span:hover,
+    .star-rating > span:hover ~ span,
+    .star-rating > span.selected {
+      color: #ff9800;
+    }
+
+    .review-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    .reviewer-name {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .review-date {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .review-content {
+      margin-top: 0.5rem;
+    }
+
+    .average-rating {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--secondary-color);
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        padding: 1rem;
+      }
+      button {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      .star-rating {
+        font-size: 20px;
+      }
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <div class="logo">
-      <img src="https://github.com/drsnaps/logo/blob/main/WhatsApp%20Image%202025-04-25%20at%2018.22.17_22e60494.jpg" alt="Adler Eats Logo">
+    <!-- Home Page -->
+    <div id="home" class="page active animate__animated animate__fadeIn">
+      <h2 id="greeting" style="color: var(--primary-color); margin-bottom: 1rem;" aria-label="Time-sensitive greeting"></h2>
+      <div style="max-width: 500px; margin: 2rem auto; background-color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);">
+        <div class="logo">
+          <img src="logo.jpg" alt="Adler Eats Logo - Delicious food delivered!" style="width: 160px; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(255, 174, 0, 0.2));">
+        </div>
+        <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--secondary-color);" class="animate__animated animate__fadeInDown">Welcome to Adler Eats!</h1>
+        <div class="flex justify-center items-center my-3">
+          <div class="text-lg mr-2">★ ★ ★ ★ ★</div>
+          <span class="text-gray-600">4.8 (124 reviews)</span>
+        </div>
+        <p style="font-size: 1.1rem; color: #555;" class="animate__animated animate__fadeInUp">Ready to satisfy your cravings? 🍟🔥</p>
+        <button onclick="showPage('order')" style="margin-top: 1.5rem; background-color: var(--primary-color);" class="animate__animated animate__pulse" aria-label="Start your order">Start Your Order 🍟</button>
+        <button onclick="showPage('reviews')" style="margin-top: 1rem; background-color: #fff; color: var(--primary-color); border: 1px solid var(--primary-color);">See Reviews ⭐</button>
+      </div>
     </div>
-    <h2>Place Your Order</h2>
-    <form action="https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse" method="POST" target="_blank">
-      <label for="name">Full Name</label>
-      <input type="text" name="entry.1234567890" required>
 
-      <label for="contact">Contact Number</label>
-      <input type="tel" name="entry.2345678901" required>
+    <!-- Order Page -->
+    <div id="order" class="page animate__animated">
+      <div style="background: linear-gradient(to bottom, #fffaf0, #ffe9c4); border-radius: 16px; padding: 2rem 1rem;">
+        <h2 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--secondary-color);" class="animate__animated animate__fadeInDown">🍴 Place Your Order</h2>
+        <p class="animate__animated animate__fadeIn" style="margin-bottom: 1.5rem;">Fill the form below to order! 🎊</p>
 
-      <label for="meal">Select Your Meal</label>
-      <select name="entry.3456789012" required>
-        <option value="Fries only — K25">Fries only — K25</option>
-        <option value="Fries + Coleslaw — K35">Fries + Coleslaw — K35</option>
-        <option value="Fries + Sausage — K55">Fries + Sausage — K55</option>
-        <option value="Fries + Coleslaw + Sausage — K65">Fries + Coleslaw + Sausage — K65</option>
-      </select>
+        <!-- Name and Contact -->
+        <div class="animate__animated animate__fadeInUp">
+          <input type="text" id="name" placeholder="👤 Your Name" aria-label="Your Name" />
+          <input type="text" id="contact" placeholder="📞 WhatsApp Number (e.g. +260...)" aria-label="WhatsApp Number" />
+        </div>
 
-      <label for="quantity">Quantity</label>
-      <select name="entry.4567890123">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
+        <!-- Menu Selection -->
+        <div class="animate__animated animate__fadeInUp">
+          <div class="menu-item" onclick="selectItem(this, '🍟 Fries', 25)" aria-label="Fries">🍟 Fries - K25</div>
+          <div class="menu-item" onclick="selectItem(this, '🍟🍟 Fries Extra', 30)" aria-lebel="Fries Extra">🍟🍟 Fries Extra - K30</div>
+          <div class="menu-item" onclick="selectItem(this, '🥗🍟 Fries + Coleslaw', 35)" aria-label="Fries + Coleslaw">🥗🍟 Fries + Coleslaw - K35</div>
+          <div class="menu-item" onclick="selectItem(this, '🌭🍟 Fries + Sausage', 55)" aria-label="Fries + Sausage">🌭🍟 Fries + Sausage - K55</div>
+          <div class="menu-item" onclick="selectItem(this, '🌭🥗🍟 Fries + Coleslaw + Sausage', 65)" aria-label="Fries + Coleslaw + Sausage">🌭🥗🍟 Fries + Coleslaw + Sausage - K65</div>
+        </div>
 
-      <label for="notes">Additional Notes</label>
-      <textarea name="entry.5678901234" rows="3" placeholder="Optional..."></textarea>
+        <!-- Quantity and Notes -->
+        <div class="animate__animated animate__fadeInUp">
+          <select id="quantity" onchange="updatePrice()" aria-label="Select Quantity">
+            <option value="1">Qty: 1</option>
+            <option value="2">Qty: 2</option>
+            <option value="3">Qty: 3</option>
+            <option value="4">Qty: 4</option>
+            <option value="5">Qty: 5</option>
+          </select>
+          <textarea id="notes" placeholder="📝 Additional Notes (optional)" aria-label="Additional Notes"></textarea>
+        </div>
 
-      <button type="submit">Submit Order</button>
-    </form>
+        <!-- Total Price and Submit -->
+        <div id="totalPrice" class="price-display animate__animated animate__fadeInUp"></div>
+        <button onclick="submitOrder()" style="margin-top: 1rem; background-color: var(--secondary-color);" class="animate__animated animate__fadeInUp" aria-label="Submit Order">Submit Order 🍽️</button>
+      </div>
+    </div>
+
+    <!-- Success Page with Review Rating -->
+    <div id="confirmation" class="page animate__animated animate__fadeIn">
+      <div style="max-width: 500px; margin: 2rem auto; background-color: white; padding: 2rem; border-radius: 16px; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);">
+        <div class="logo">
+          <img src="logo.jpg" alt="Adler Eats Logo - Delicious food delivered!" style="width: 160px; margin-bottom: 1rem; filter: drop-shadow(0 0 10px rgba(255, 174, 0, 0.2));">
+        </div>
+        <h2 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--primary-color);" class="animate__animated animate__bounceIn">🎉 Order Confirmed! 🎉</h2>
+        <p style="font-size: 1.1rem; color: #555;" class="animate__animated animate__fadeInUp">Your order is being prepared! 🍟🔥</p>
+        
+        <!-- Review Section -->
+        <div class="mt-6 p-4 bg-gray-50 rounded-lg animate__animated animate__fadeInUp">
+          <h3 class="text-lg font-bold mb-3">Rate your experience</h3>
+          <p class="text-sm mb-3 text-gray-600">Help us improve by leaving a review!</p>
+          
+          <div class="star-rating mb-3">
+            <span onclick="rate(1)">★</span>
+            <span onclick="rate(2)">★</span>
+            <span onclick="rate(3)">★</span>
+            <span onclick="rate(4)">★</span>
+            <span onclick="rate(5)">★</span>
+          </div>
+          
+          <textarea id="reviewText" placeholder="Share your experience (optional)" class="w-full p-2 border rounded-lg mb-3" rows="3"></textarea>
+          <button onclick="submitReview()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition">Submit Review</button>
+        </div>
+        
+        <button onclick="orderAgain()" style="margin-top: 1.5rem; background-color: var(--primary-color);" class="animate__animated animate__pulse" aria-label="Order Again">Order Again 🔁</button>
+        <button onclick="showPage('home')" style="margin-top: 1.5rem; background-color: #444;" aria-label="Back to Home">Back to Home 🏠</button>
+      </div>
+    </div>
+
+    <!-- Reviews Page -->
+    <div id="reviews" class="page">
+      <div style="max-width: 500px; margin: 0 auto; background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);">
+        <button onclick="showPage('home')" class="mb-4 flex items-center text-gray-600">
+          <i class="fas fa-arrow-left mr-2"></i> Back to Home
+        </button>
+        
+        <h2 class="text-2xl font-bold mb-4 text-orange-600 animate__animated animate__fadeInDown">Customer Reviews</h2>
+        
+        <div class="mb-6 text-center animate__animated animate__fadeIn">
+          <div class="average-rating mb-2">4.8</div>
+          <div class="star-rating mb-2" style="pointer-events: none;">
+            <span class="selected">★</span>
+            <span class="selected">★</span>
+            <span class="selected">★</span>
+            <span class="selected">★</span>
+            <span class="selected">★</span>
+          </div>
+          <p class="text-gray-600">Based on 124 reviews</p>
+        </div>
+        
+        <div class="flex justify-between mb-6">
+          <button id="allReviews" class="bg-yellow-500 text-white px-4 py-2 rounded-lg" onclick="filterReviews('all')">All Reviews</button>
+          <button id="fiveStar" class="bg-gray-200 px-4 py-2 rounded-lg" onclick="filterReviews(5)">5★</button>
+          <button id="fourStar" class="bg-gray-200 px-4 py-2 rounded-lg" onclick="filterReviews(4)">4★</button>
+          <button id="threeStar" class="bg-gray-200 px-4 py-2 rounded-lg" onclick="filterReviews(3)">3★</button>
+        </div>
+        
+        <div id="reviewsContainer" class="space-y-4">
+          <!-- Reviews will be loaded here -->
+        </div>
+      </div>
+    </div>
   </div>
+
+  <script>
+    let selectedItem = null;
+    let currentRating = 0;
+    
+    // Sample reviews data
+    let reviews = [
+      { name: "John M.", rating: 5, content: "Best fries in town! Always fresh and crispy. The coleslaw is amazing too.", date: "2023-10-15" },
+      { name: "Sarah K.", rating: 5, content: "Fast delivery and delicious food. Highly recommend the fries with sausage combo!", date: "2023-10-12" },
+      { name: "David P.", rating: 4, content: "Great food, but sometimes the delivery takes longer during peak hours.", date: "2023-10-10" },
+      { name: "Lisa T.", rating: 5, content: "My favorite place to order from. The quality is always consistent.", date: "2023-10-08" },
+      { name: "Mike J.", rating: 3, content: "Food is good but a bit pricey compared to other places. Still tasty though.", date: "2023-10-05" }
+    ];
+
+    function showPage(id) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      
+      if (id === 'reviews') {
+        loadReviews();
+      }
+    }
+
+    function getGreeting() {
+      const now = new Date();
+      const hour = now.getHours();
+      if (hour < 12) return "Good Morning";
+      if (hour < 18) return "Good Afternoon";
+      return "Good Evening";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const greetingElement = document.getElementById("greeting");
+      greetingElement.textContent = getGreeting();
+
+      // Check if the site is open
+      checkBusinessHours();
+    });
+
+    function checkBusinessHours() {
+      const now = new Date();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+
+      // Define opening hours: 12:00 PM (12:00) to 10:30 PM (22:30)
+      const isAfterClosing = hours > 22 || (hours === 22 && minutes > 30);
+      const isBeforeOpening = hours < 12;
+
+      if (isAfterClosing || isBeforeOpening) {
+        // Display a "closed" message with animation, emojis, and logo
+        document.body.innerHTML = `
+          <div style="text-align: center; padding: 2rem; font-family: Arial, sans-serif; animation: fadeIn 2s;">
+            <div class="logo" style="margin-bottom: 1.5rem;">
+              <img src="logo.jpg" alt="Adler Eats Logo" style="width: 160px; border-radius: 16px; filter: drop-shadow(0 0 10px rgba(255, 174, 0, 0.4));">
+            </div>
+            <h1 style="font-size: 2.5rem; color: #e65100; animation: bounce 2s infinite;">😔 We're Sorry, We're Closed!</h1>
+            <p style="font-size: 1.2rem; color: #555; margin-top: 1rem; animation: fadeInUp 2s;">
+              We're open from <strong>12:00 PM</strong> to <strong>10:30 PM</strong>. Please come back during our operating hours. 
+              We can't wait to serve you! 🍟❤️
+            </p>
+            <p style="font-size: 1rem; color: #888; margin-top: 1.5rem; animation: fadeInUp 2s;">
+              Thank you for your patience and understanding! 🙏
+            </p>
+            <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Sorry GIF" style="margin-top: 2rem; max-width: 80%; border-radius: 16px;">
+          </div>
+          <style>
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes fadeInUp {
+              from { opacity: 0; transform: translateY(20px); }
+              to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+          </style>
+        `;
+      }
+    }
+
+    function selectItem(element, name, price) {
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedItem = { name, price };
+      updatePrice();
+    }
+
+    function updatePrice() {
+      if (!selectedItem) return;
+      const qty = parseInt(document.getElementById('quantity').value);
+      const total = selectedItem.price * qty;
+      document.getElementById('totalPrice').textContent = `💰 Total: K${total}`;
+    }
+
+    function submitOrder() {
+      const name = document.getElementById('name').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const qty = parseInt(document.getElementById('quantity').value || 1);
+      const notes = document.getElementById('notes').value.trim();
+
+      if (!selectedItem || !name || !contact) {
+        alert('Please fill out all fields and select a menu item.');
+        return;
+      }
+
+      const total = selectedItem.price * qty;
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const apiKey = '3139113'; // Move to server-side
+      const adminPhone = '+260974867751';
+
+      const adminMsg = `📦 New Order - Adler Eats\n👤 Name: ${name}\n📞 Contact: ${contact}\n🍽️ Order: ${selectedItem.name} x${qty}\n💰 Total: K${total}\n🕒 Time: ${time}\n📝 Notes: ${notes}`;
+      const customerMsg = `✅ Hi ${name}, your order for ${selectedItem.name} x${qty} (K${total}) has been received at ${time}. Thanks for using Adler Eats! 🍟`;
+
+      // Handle errors
+      Promise.all([
+        fetch(`https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(adminPhone)}&text=${encodeURIComponent(adminMsg)}&apikey=${apiKey}`),
+        fetch(`https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(contact)}&text=${encodeURIComponent(customerMsg)}&apikey=${apiKey}`)
+      ]).catch(() => {
+        alert("Failed to submit your order. Please try again.");
+      });
+
+      showPage('confirmation');
+    }
+
+    function orderAgain() {
+      selectedItem = null;
+      document.getElementById('name').value = '';
+      document.getElementById('contact').value = '';
+      document.getElementById('quantity').value = '1';
+      document.getElementById('notes').value = '';
+      document.getElementById('totalPrice').textContent = '';
+      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('selected'));
+      showPage('order');
+    }
+    
+    // Star Rating Functions
+    function rate(rating) {
+      currentRating = rating;
+      const stars = document.querySelectorAll('.star-rating > span');
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('selected');
+        } else {
+          star.classList.remove('selected');
+        }
+      });
+    }
+    
+    function submitReview() {
+      const name = document.getElementById('name').value.trim() || "Anonymous";
+      const reviewText = document.getElementById('reviewText').value.trim();
+      
+      if (currentRating === 0) {
+        alert("Please select a star rating before submitting your review.");
+        return;
+      }
+      
+      const currentDate = new Date().toISOString().split('T')[0];
+      
+      // Format review date nicely (e.g., "Oct 15, 2023")
+      const dateObj = new Date(currentDate);
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      const formattedDate = dateObj.toLocaleDateString('en-US', options);
+      
+      // Prepare review object
+      const newReview = {
+        name: name,
+        rating: currentRating,
+        content: reviewText || "No comment provided.",
+        date: formattedDate
+      };
+      
+      // Add to reviews array
+      reviews.unshift(newReview);
+      
+      // Reset form
+      document.querySelectorAll('.star-rating > span').forEach(star => {
+        star.classList.remove('selected');
+      });
+      document.getElementById('reviewText').value = '';
+      currentRating = 0;
+      
+      // Show success message
+      alert("Thank you for your review! Your feedback helps us improve.");
+      
+      // Show the home page
+      showPage('home');
+    }
+    
+    function loadReviews(filter = 'all') {
+      const container = document.getElementById('reviewsContainer');
+      container.innerHTML = '';
+      
+      // Sort reviews by date (newest first)
+      const sortedReviews = [...reviews].sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      let filteredReviews = sortedReviews;
+      if (filter !== 'all') {
+        filteredReviews = sortedReviews.filter(review => review.rating === filter);
+      }
+      
+      if (filteredReviews.length === 0) {
+        container.innerHTML = '<p class="text-gray-500 py-4">No reviews found for this rating.</p>';
+        return;
+      }
+      
+      filteredReviews.forEach(review => {
+        const reviewCard = document.createElement('div');
+        reviewCard.className = 'review-card animate__animated animate__fadeIn';
+        
+        // Generate stars based on rating
+        let stars = '';
+        for (let i = 0; i < 5; i++) {
+          if (i < review.rating) {
+            stars += '<span style="color: #FF9800;">★</span>';
+          } else {
+            stars += '<span style="color: #ccc;">★</span>';
+          }
+        }
+        
+        reviewCard.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div class="reviewer-name">${review.name}</div>
+            <div class="review-date">${review.date}</div>
+          </div>
+          <div class="text-yellow-500 my-1">${stars}</div>
+          <div class="review-content">${review.content}</div>
+        `;
+        
+        container.appendChild(reviewCard);
+      });
+    }
+    
+    function filterReviews(rating) {
+      // Highlight the active filter button
+      document.querySelectorAll('#allReviews, #fiveStar, #fourStar, #threeStar').forEach(btn => {
+        btn.classList.remove('bg-yellow-500', 'text-white');
+        btn.classList.add('bg-gray-200');
+      });
+      
+      if (rating === 'all') {
+        document.getElementById('allReviews').classList.remove('bg-gray-200');
+        document.getElementById('allReviews').classList.add('bg-yellow-500', 'text-white');
+        loadReviews('all');
+      } else if (rating === 5) {
+        document.getElementById('fiveStar').classList.remove('bg-gray-200');
+        document.getElementById('fiveStar').classList.add('bg-yellow-500', 'text-white');
+        loadReviews(5);
+      } else if (rating === 4) {
+        document.getElementById('fourStar').classList.remove('bg-gray-200');
+        document.getElementById('fourStar').classList.add('bg-yellow-500', 'text-white');
+        loadReviews(4);
+      } else if (rating === 3) {
+        document.getElementById('threeStar').classList.remove('bg-gray-200');
+        document.getElementById('threeStar').classList.add('bg-yellow-500', 'text-white');
+        loadReviews(3);
+      }
+    }
+  </script>
 </body>
 </html>
